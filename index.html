@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equitas Prosthetics | Empowering Lives Through Innovation</title>
+    
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Google Model Viewer for 3D -->
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    
+    <style>
+        /* CSS Variables */
+
+        
+        :root {
+            --primary: #1F3F6E;
+            --primary-light: #2A5490;
+            --primary-dark: #152D4F;
+            --accent: #5B8CC9;
+            --accent-light: #7BA5D8;
+            --bg-dark: #0a0e1a;
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+        }
+        
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* Glassmorphism Effect */
+        .glass {
+            background: rgba(31, 63, 110, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #7BA5D8 0%, #5B8CC9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+        }
+        
+        /* Scroll Progress Bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--accent-light) 100%);
+            transform-origin: left;
+            z-index: 9999;
+            transform: scaleX(0);
+        }
+        
+        /* Ambient Glows */
+        .ambient-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .glow-1 {
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            top: -200px;
+            left: -200px;
+            animation: float 25s infinite ease-in-out;
+        }
+        
+        .glow-2 {
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            bottom: -200px;
+            right: -200px;
+            animation: float 30s infinite ease-in-out reverse;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(50px, -50px); }
+        }
+        
+        /* Navbar - Always Visible Top Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: background 0.3s ease;
+        }
+        
+        .navbar-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+        }
+        
+        /* Logo Section */
+        /* This forces the container to stay small */
+        .main-logo {
+            height: 500px; /* Crank this up high since most of it is empty space */
+            width: auto;
+            object-fit: contain;
+    
+            /* This "zooms in" on the center of the image */
+            transform: scale(0.5) translateY(35px);
+            /* This pulls the navbar back in so the empty space doesn't create a huge gap */
+            margin: -20px 0; 
+            display: block;
+        }
+
+        .logo-container {
+            overflow: hidden; /* This clips the "invisible" empty space so it doesn't overlap your 3D hand */
+            display: flex;
+            align-items: center;
+            height: 80px; /* Keep this to your desired navbar thickness */
+        }
+
+        .logo-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-left: 0px; /* Space between the image and the word Equitas */
+            white-space: nowrap; /* Keeps the text from wrapping to a second line */
+        }
+        
+        /* Navigation Links - Always Horizontal */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+            margin: 0;
+        }
+        
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            position: relative;
+            padding-bottom: 4px;
+            white-space: nowrap;
+        }
+        
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+        
+        .nav-links a.active {
+            color: var(--text-primary);
+        }
+        
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            border-radius: 2px;
+        }
+        
+        /* CTA Button */
+        .cta-button {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 0.625rem 1.5rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 500;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 40px rgba(91, 140, 201, 0.3);
+            border-color: rgba(91, 140, 201, 0.3);
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        /* 3D Model Background - CRITICAL INFRASTRUCTURE FOR SCROLL ROTATION */
+        .model-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.3;
+        }
+        
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            --poster-color: transparent;
+        }
+        
+        /* Hero Content */
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 900px;
+            padding: 2rem;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+        }
+        
+        .hero-content p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            font-weight: 300;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hero-credit {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            z-index: 20; 
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            opacity: 0.6;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+/* Mobile Tweak: Moves it so it doesn't get cut off on tiny screens */
+@media (max-width: 768px) {
+    .hero-credit {
+        bottom: 1rem;
+        left: 1rem;
+        font-size: 0.65rem;
+    }
+}
+        /* Stats Section */
+        .stats-section {
+            padding: 6rem 2rem;
+        }
+        
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .stat-card {
+            background: rgba(31, 63, 110, 0.08);
+            backdrop-filter: blur(12px);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+        
+        /* Mission Section */
+        .mission-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.1), transparent);
+        }
+        
+        .mission-container {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .mission-container h2 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+        
+        .mission-container p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 40px rgba(91, 140, 201, 0.3);
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            padding: 6rem 2rem;
+        }
+        
+        .cta-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(31, 63, 110, 0.08);
+            backdrop-filter: blur(12px);
+            padding: 4rem 3rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+        
+        .cta-container h2 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta-container p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-secondary {
+            background: rgba(31, 63, 110, 0.08);
+            backdrop-filter: blur(12px);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-secondary:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Footer */
+        .footer {
+            background: rgba(31, 63, 110, 0.08);
+            backdrop-filter: blur(12px);
+            padding: 3rem 2rem;
+            margin-top: 6rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-column h4 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-column a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-column a:hover {
+            color: white;
+        }
+        
+        .footer-column p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 300;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        /* Fade In Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1400px) {
+            .nav-links {
+                gap: 1.5rem;
+            }
+            
+            .navbar-container {
+                padding: 0 2rem;
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            .nav-links {
+                gap: 1.2rem;
+            }
+            
+            .nav-links a {
+                font-size: 0.85rem;
+            }
+            
+            .navbar-container {
+                padding: 0 1.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            
+            .navbar-container {
+                padding: 0 1rem;
+                height: 60px;
+             }
+
+
+            .main-logo {
+                height: 250px; 
+                transform: scale(0.4) translateY(15px);
+        }
+
+
+
+            .nav-links {
+                gap: 0.8rem;
+                overflow-x: auto;
+                padding-bottom: 5px;
+                -webkit-overflow-scrolling: touch;
+         }
+
+            .nav-links a {
+                font-size: 0.7rem;
+            }
+
+
+            .hero-content h1 {
+                font-size: 2.2rem;
+        }
+    
+            .hero-content p {
+                font-size: 1rem;
+        }
+
+
+            .stats-container {
+                grid-template-columns: 1fr;
+        }
+    }
+        
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+        }
+        
+        @media (min-width: 1025px) {
+            .hero-content h1 {
+                font-size: 5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Ambient Glows -->
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+    
+    <!-- Navbar - Always Visible at Top -->
+    <nav class="navbar glass" id="navbar">
+        <div class="navbar-container">
+            <!-- Logo Section -->
+            <div class="logo-container">
+                <img src="/Media/logo.png" alt="Equitas Logo" class="main-logo">
+            </div>
+            
+            <!-- Navigation Links - All Visible Horizontally -->
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="chapters.html">Chapters</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="news.html">News</a></li>
+                <li><a href="partnerships.html">Partnerships</a></li>
+            </ul>
+            
+            <!-- Contact Us Button -->
+            <a href="contact.html" class="cta-button">Contact Us</a>
+        </div>
+    </nav>
+    
+    <!-- Hero Section with 3D Model Background -->
+    <section class="hero-section">
+        <!-- 3D Model Background with Scroll Rotation Infrastructure -->
+
+        
+        <div class="model-background">
+            <model-viewer
+                id="prostheticModel"
+                src="/Media/model.glb"
+                alt="Prosthetic Hand 3D Model"
+                auto-rotate
+                camera-controls
+                disable-zoom
+                shadow-intensity="0"
+                exposure="0.8"
+                camera-orbit="45deg 75deg 10m"
+                min-camera-orbit="auto auto 10m"
+                max-camera-orbit="auto auto 10m"
+                interaction-prompt="none"
+                touch-action="none"
+                style="background: transparent; pointer-events: none;">
+            </model-viewer>
+        </div>
+        
+        <!-- Hero Content -->
+        <div class="hero-content fade-in" id="heroContent">
+            <h1>
+                Empowering Lives<br>
+                Through <span class="gradient-text">Innovation</span>
+            </h1>
+            <p>
+                Providing free prosthetic solutions to those who need them most.
+            </p>
+        </div>
+    </section>
+    <div class="hero-credit">
+        <span>Model by SeanNicolas / CC BY 4.0. Model is for illustrative purposes and does not represent the hardware distributed.</span>
+    </div>
+    
+    <!-- Impact Stats Section -->
+    <section class="stats-section">
+        <div class="stats-container fade-in" id="statsSection">
+            <div class="stat-card">
+                <div class="stat-number gradient-text">30+</div>
+                <div class="stat-label">Lives Changed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number gradient-text">2</div>
+                <div class="stat-label">Chapters, with more coming soon</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number gradient-text">100%</div>
+                <div class="stat-label">Free Service</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Mission Statement Section -->
+    <section class="mission-section">
+        <div class="mission-container fade-in" id="missionSection">
+            <h2>
+                Our <span class="gradient-text">Purpose</span>
+            </h2>
+            <p>
+                Equitas Prosthetics is a student-led initiative dedicated to bridging the gap in prosthetic accessibility. With today's exuberant market prices for the supposed "luxury" of basic mobility, we leverage
+                3D-printing technology to create mechanical devices, thus bypassing traditional financial obstacles. We believe mobility is a right, and through affordable innovation and compassion, we are building a world where everyone can regain their independence. And as such, we strive to continue innovating. 
+            </p>
+            <a href="about.html" class="btn-primary">Discover Our Story</a>
+        </div>
+    </section>
+    
+    <!-- Get Involved CTA -->
+    <section class="cta-section">
+        <div class="cta-container fade-in" id="ctaSection">
+            <h2>
+                Ready to Make a <span class="gradient-text">Difference?</span>
+            </h2>
+            <p>
+                Join our growing community of volunteers, donors, and advocates working 
+                to bring affordable solutions to those in need.
+            </p>
+            <div class="button-group">
+                <a href="chapters.html" class="btn-primary">Start a Chapter</a>
+                <a href="contact.html" class="btn-secondary">Support Our Work</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <div class="logo-text gradient-text" style="font-size: 1.5rem; margin-bottom: 1rem;">Equitas</div>
+                <p>Empowering lives through innovative prosthetic solutions.</p>
+            </div>
+            <div class="footer-column">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="chapters.html">Chapters</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="news.html">News</a></li>
+                    <li><a href="partnerships.html">Partnerships</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Connect</h4>
+                <p>wangaaron1945[at]gmail[dot]com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Equitas Prosthetics. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // ========================================
+        // SCROLL PROGRESS BAR
+        // ========================================
+        window.addEventListener('scroll', () => {
+            const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (window.scrollY / windowHeight) * 100;
+            document.getElementById('scrollProgress').style.transform = `scaleX(${scrolled / 100})`;
+        });
+        
+        // ========================================
+        // 3D MODEL SCROLL ROTATION - CRITICAL INFRASTRUCTURE
+        // This makes the 3D model rotate as the user scrolls
+        // ========================================
+        const model = document.querySelector('#prostheticModel');
+        if (model) {
+            window.addEventListener('scroll', () => {
+                // Calculate scroll progress (0 to 1)
+                const scrollProgress = window.scrollY / window.innerHeight;
+                
+                // Rotation: 720 degrees (2 full rotations) based on scroll
+                const rotation = scrollProgress * 720;
+                
+                // Tilt: Slight camera tilt adjustment (75 to 90 degrees)
+                const tilt = 75 + (scrollProgress * 15);
+                
+                // Update model camera orbit
+                // Format: "horizontal-rotation vertical-tilt distance"
+                model.cameraOrbit = `0deg ${rotation}deg 6m`;
+            });
+        }
+        
+        // ========================================
+        // FADE IN ON SCROLL
+        // ========================================
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const fadeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        fadeElements.forEach(el => fadeObserver.observe(el));
+        
+        // ========================================
+        // NAVBAR BACKGROUND ON SCROLL
+        // ========================================
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(31, 63, 110, 0.12)';
+            } else {
+                navbar.style.background = 'rgba(31, 63, 110, 0.08)';
+            }
+        });
+        
+        // ========================================
+        // INITIALIZE ANIMATIONS
+        // ========================================
+        setTimeout(() => {
+            document.getElementById('heroContent').classList.add('visible');
+        }, 200);
+    </script>
+</body>
+</html>
