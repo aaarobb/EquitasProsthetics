@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Equitas Prosthetics</title>
+    
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Variables */
+        :root {
+            --primary: #1F3F6E;
+            --primary-light: #2A5490;
+            --primary-dark: #152D4F;
+            --accent: #5B8CC9;
+            --accent-light: #7BA5D8;
+            --bg-dark: #0a0e1a;
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+        }
+        
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* Glassmorphism Effect */
+        .glass {
+            background: rgba(31, 63, 110, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #7BA5D8 0%, #5B8CC9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+        }
+        
+        /* Scroll Progress Bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--accent-light) 100%);
+            transform-origin: left;
+            z-index: 9999;
+            transform: scaleX(0);
+        }
+        
+        /* Ambient Glows */
+        .ambient-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .glow-1 {
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            top: -200px;
+            left: -200px;
+            animation: float 25s infinite ease-in-out;
+        }
+        
+        .glow-2 {
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            bottom: -200px;
+            right: -200px;
+            animation: float 30s infinite ease-in-out reverse;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(50px, -50px); }
+        }
+        
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: background 0.3s ease;
+        }
+        
+        .navbar-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+        }
+        
+        /* Logo Section */
+        .main-logo {
+            height: 500px;
+            width: auto;
+            object-fit: contain;
+            transform: scale(0.5) translateY(35px);
+            margin: -20px 0; 
+            display: block;
+        }
+
+        .logo-container {
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-left: 0px;
+            white-space: nowrap;
+        }
+        
+        /* Navigation Links */
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+            margin: 0;
+        }
+        
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            position: relative;
+            padding-bottom: 4px;
+            white-space: nowrap;
+        }
+        
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+        
+        .nav-links a.active {
+            color: var(--text-primary);
+        }
+        
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            border-radius: 2px;
+        }
+        
+        /* CTA Button */
+        .cta-button {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 0.625rem 1.5rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 500;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 40px rgba(91, 140, 201, 0.3);
+            border-color: rgba(91, 140, 201, 0.3);
+        }
+        
+        /* Page Header */
+        .page-header {
+            padding: 150px 2rem 100px;
+            text-align: center;
+        }
+        
+        .page-header h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+        
+        .page-header p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+        
+        /* Story Section */
+        .story-section {
+            padding: 4rem 2rem;
+        }
+        
+        .story-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .story-container h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+        
+        .story-container p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+        
+        /* Timeline Section */
+        .timeline-section {
+            padding: 6rem 2rem;
+            background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.1), transparent);
+        }
+        
+        .timeline-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .timeline-container h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 4rem;
+            text-align: center;
+        }
+        
+        .journey-item {
+            margin-bottom: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .journey-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        
+        .journey-item h3 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .journey-item p {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-weight: 300;
+        }
+        
+        /* Impact Stats */
+        .impact-section {
+            padding: 6rem 2rem;
+        }
+        
+        .impact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .impact-container h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+        
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        
+        .impact-card {
+            background: rgba(31, 63, 110, 0.08);
+            backdrop-filter: blur(12px);
+            padding: 2.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .impact-card:hover {
+            border-color: rgba(59, 130, 246, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .impact-number {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .impact-label {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        
+        /* Footer */
+        .footer {
+            background: rgba(31, 63, 110, 0.08);
+            backdrop-filter: blur(12px);
+            padding: 3rem 2rem;
+            margin-top: 6rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-column h4 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-column a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-column a:hover {
+            color: white;
+        }
+        
+        .footer-column p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 300;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        /* Fade In Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1400px) {
+            .nav-links {
+                gap: 1.5rem;
+            }
+            
+            .navbar-container {
+                padding: 0 2rem;
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            .nav-links {
+                gap: 1.2rem;
+            }
+            
+            .nav-links a {
+                font-size: 0.85rem;
+            }
+            
+            .navbar-container {
+                padding: 0 1.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+
+    .navbar-container {
+        padding: 0 1rem;
+        height: 60px;
+    }
+
+
+    .main-logo {
+        height: 250px; 
+        transform: scale(0.4) translateY(15px);
+    }
+
+    
+    .nav-links {
+        gap: 0.8rem;
+        overflow-x: auto;
+        padding-bottom: 5px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .nav-links a {
+        font-size: 0.7rem;
+    }
+
+   
+    .hero-content h1 {
+        font-size: 2.2rem;
+    }
+    
+    .hero-content p {
+        font-size: 1rem;
+    }
+
+
+    .stats-container {
+        grid-template-columns: 1fr;
+    }
+}
+    </style>
+</head>
+<body>
+
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div class="scroll-progress" id="scrollProgress"></div>
+    <nav class="navbar glass" id="navbar">
+        <div class="navbar-container">
+            <div class="logo-container">
+                <img src="Media/logo.png" alt="Equitas Logo" class="main-logo">
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html" class="active">About Us</a></li>
+                <li><a href="chapters.html">Chapters</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="news.html">News</a></li>
+                <li><a href="partnerships.html">Partnerships</a></li>
+            </ul>
+            <a href="contact.html" class="cta-button">Contact Us</a>
+        </div>
+    </nav>
+    
+
+    <section class="page-header">
+        <h1>Our <span class="gradient-text">Story</span></h1>
+        <p>
+            From an Eagle Scout project to a student-led movement transforming lives through accessible prosthetics.
+        </p>
+    </section>
+    
+
+    <section class="story-section">
+        <div class="story-container fade-in">
+            <h2>The <span class="gradient-text">Beginning</span></h2>
+            <p>
+                Equitas Prosthetics began as Aaron's Eagle Scout project with an ambitious goal to engineer <em>myoelectric</em> prosthetics that could restore mobility. He originally wanted to design an advanced and user-driven device that could be personalized and integrated at a fraction of the cost. 
+            </p>
+            <p>
+                Currently, over 65 million people worldwide live with limb difference <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC9210140/">(Morgado et. al., 2022)</a>, yet access to prosthetics remains severely limited by cost. Prosthetic devices can range from $5,000 USD <a href="https://orthoticslimited.com/blog/cost-of-prosthetic-limbs/">(Orthotics Ltd., 2025)</a> for basic prosthetics to over $100,000 USD <a href="https://celerityprosthetics.com/how-much-do-prosthetic-arms-cost/">(Celerity Prosthetics, 2025)</a> for myoelectric models, thus placing access out of reach for many. 
+                In the end, Aaron was able to donate five mechanical (body-powered) hands using 3D printers. Although simpler in design, it was equally transformative in the sense that it was produced at ≤ 0.01% of market prices! With support from open-source communities like <a href="https://enablingthefuture.org">Enabling the Future</a>, the project found a sustainable path forward in the mission to create functional prosthetics at minimal cost.
+            </p>
+            <p>
+                Having witnessed the profound impact of accessible prosthetics firsthand, Aaron founded the Strake Jesuit Medical Prosthetics and Design Club (SJMPDC) to inspire fellow students. Today, with that desire to make prosthetics accessible is growing beyond Strake Jesuit, SJMPDC was rebranded into Equitas Prosthetics!
+            </p>
+        </div>
+    </section>
+    
+
+    <section class="timeline-section">
+        <div class="timeline-container">
+            <h2>Our <span class="gradient-text">Journey</span></h2>
+            
+            <div class="journey-item fade-in">
+                <h3>Beginnings</h3>
+                <p>
+                    Started as an Eagle Scout project with the ambitious goal of creating myoelectric prosthetics. The vision was to learn and use cutting-edge technology to restore mobility and independence.
+                </p>
+            </div>
+            
+            <div class="journey-item fade-in">
+                <h3>A Pivot</h3>
+                <p>
+                    Because regulatory policies e.g. HIPAA prevented the sharing of patient information, customized fitting would prove a challenge. Therefore, a strategic decision to create a one-size-fits-all mechanical hand was realized. 
+                </p>
+            </div>
+            
+            <div class="journey-item fade-in">
+                <h3>Finding Mentorship</h3>
+                <p>
+                    In searching for guidance, the project was referred to Enable the Future, an open-source community dedicated to creating accessible prosthetic solutions through 3D printing. Their existing infrastructure and proven designs became a turning point. Now the focus could shift to distribution and accessibility. Enable the Future's established framework served as the crucial starting point.
+                </p>
+            </div>
+            
+            <div class="journey-item fade-in">
+                <h3>The Movement</h3>
+                <p>
+                    Growing out of a school club, Equitas Prosthetics is a growing student-led initiative with currently expanding chapters across the Houston area. As innovation continues, Equitas hopes to realize its original goal: to develop a myoelectric hand. 
+                </p>
+            </div>
+        </div>
+    </section>
+    
+
+    <section class="impact-section">
+        <div class="impact-container">
+            <h2>Our <span class="gradient-text">Impact</span></h2>
+            <div class="impact-grid">
+                <div class="impact-card fade-in">
+                    <div class="impact-number gradient-text">30+</div>
+                    <div class="impact-label">Prosthetics Delivered</div>
+                </div>
+                <div class="impact-card fade-in">
+                    <div class="impact-number gradient-text">2</div>
+                    <div class="impact-label">Active Chapters<br>(More Coming Soon)</div>
+                </div>
+                <div class="impact-card fade-in">
+                    <div class="impact-number gradient-text">300+</div>
+                    <div class="impact-label">3D-Printed Toys<br>for Children</div>
+                </div>
+                <div class="impact-card fade-in">
+                    <div class="impact-number gradient-text">$0</div>
+                    <div class="impact-label">Cost to Recipients</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <div class="logo-text gradient-text" style="font-size: 1.5rem; margin-bottom: 1rem;">Equitas</div>
+                <p>Empowering lives through innovative prosthetic solutions.</p>
+            </div>
+            <div class="footer-column">
+                <h4>Navigation</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="chapters.html">Chapters</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="news.html">News</a></li>
+                    <li><a href="partnerships.html">Partnerships</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Connect</h4>
+                <p>wangaaron1945[at]gmail[dot]com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Equitas Prosthetics. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+
+        window.addEventListener('scroll', () => {
+            const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (window.scrollY / windowHeight) * 100;
+            document.getElementById('scrollProgress').style.transform = `scaleX(${scrolled / 100})`;
+        });
+        
+
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const fadeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        fadeElements.forEach(el => fadeObserver.observe(el));
+        
+
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(31, 63, 110, 0.12)';
+            } else {
+                navbar.style.background = 'rgba(31, 63, 110, 0.08)';
+            }
+        });
+    </script>
+</body>
+</html>
